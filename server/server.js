@@ -6,12 +6,13 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const Register = require('./Models/RegisterSchema');
-app.use(express.json());
 app.use(cors({
     origin: "https://rnlform-2axs.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
+app.options("*", cors());
+app.use(express.json());
 
 app.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
