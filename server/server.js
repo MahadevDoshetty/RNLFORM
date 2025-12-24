@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const Register = require('./Models/RegisterSchema');
 app.use(cors({
-    origin: "https://rnlform-2axs.vercel.app",
+    origin: "https://rnlform-2axs.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
