@@ -95,7 +95,9 @@ app.get('/dashboard', authmiddleware, async (req, res) => {
         message: `Welcome ${req.user.name} !!`
     })
 })
-mongoose.connect(process.env.MONGO_URL).then(() => console.log("Database Connected Successfully!")); // Mongoose connect returns promise
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true, useUnifiedTopology: true, ssl: true
+}).then(() => console.log("Database Connected Successfully!")); // Mongoose connect returns promise
 // If middleware sends a response then next() must not be called and vice-versa
 app.listen(process.env.PORT, () => {
     console.log(`The port is running on ${process.env.PORT} `);
