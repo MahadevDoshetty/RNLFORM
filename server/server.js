@@ -11,7 +11,6 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
-app.options('*', cors());
 app.use(express.json());
 
 app.post("/register", async (req, res) => {
