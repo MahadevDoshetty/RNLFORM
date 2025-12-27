@@ -7,7 +7,17 @@ const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const Register = require('./Models/RegisterSchema');
 const corsOptions = {
-    origin: [process.env.FRONTEND_PROD, process.env.FRONTEND_LOCAL],
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true); 
+
+        // allow main prod, localhost, and ALL Vercel preview deployments
+        if (allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+            callback(null, true);
+        } else {
+            console.log("Blocked CORS request from:", origin);
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 };
