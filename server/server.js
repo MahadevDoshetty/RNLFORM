@@ -6,9 +6,13 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const Register = require('./Models/RegisterSchema');
+const allowedOrigins = [
+    process.env.FRONTEND_PROD,   
+    process.env.FRONTEND_LOCAL   
+];
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin) return callback(null, true); 
+        if (!origin) return callback(null, true);
 
         // allow main prod, localhost, and ALL Vercel preview deployments
         if (allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
