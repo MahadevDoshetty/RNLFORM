@@ -20,7 +20,7 @@ const Register = () => {
             alert("Both the passwords must match!");
             return 0;
         };
-        const response = await fetch(import.meta.env.VITE_API_URL, {
+        const response = await fetch(import.meta.env.VITE_API_URL || import.meta.env.VITE_LOCALHOST_REGISTER, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

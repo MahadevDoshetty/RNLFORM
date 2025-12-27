@@ -6,7 +6,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState("");
     const dataFetch = async () => {
-        const response = await fetch(import.meta.env.VITE_DASHBOARD, {
+        const response = await fetch(import.meta.env.VITE_DASHBOARD || import.meta.env.VITE_LOCALHOST_DASHBOARD, {
             method: "GET",
             headers: {
                 "content-type": "application/json",
@@ -15,7 +15,7 @@ const Dashboard = () => {
         });
         const data = await response.json();
         if (!response.ok) {
-            navigate('/error',{replace:true});
+            navigate('/error', { replace: true });
         }
         setMessage(data.message);
     }
@@ -27,6 +27,8 @@ const Dashboard = () => {
             </Box>
             <Box>
                 <h3>{message} </h3>
+                <Button variant='text' sx={{ width: '10rem' }} onClick={() => navigate('/resetPswd')} >Forgot Password</Button>
+                
             </Box>
         </Box>
     )

@@ -5,13 +5,17 @@ import Register from './Register';
 import Dashboard from './Dashboard';
 import Error from './Error';
 import ProtectedRoute from './ProtectedRoute';
+import ForgotPswd from './ForgotPswd';
 
 const App = () => {
   return (
     <Routes>
       <Route path='/' element={<Register />} />
       <Route path='/login' element={<Login />} />
-      <Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route element={<ProtectedRoute />} >
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/resetpswd' element={<ForgotPswd />} />
+      </Route>
       <Route path='/error' element={<Error />} />
     </Routes>
   )

@@ -7,9 +7,9 @@ const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const Register = require('./Models/RegisterSchema');
 const corsOptions = {
-  origin: "https://rnlform-2axs.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+    origin: [process.env.FRONTEND_PROD, process.env.FRONTEND_LOCAL],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
 };
 
 app.use(cors(corsOptions));
@@ -99,9 +99,30 @@ app.get('/dashboard', authmiddleware, async (req, res) => {
         message: `Welcome ${req.user.name} !!`
     })
 })
+app.post('/resetpswd', async (req, res) => {
+    const { email, oldPassword, newPassword } = req.body;
+    const isEmailMatch = await Register.findOne({ email });
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    if (!isEmailMatch) {
+        return res.status(400).json({
+            message: "User not found!"
+        })
+    }
+    const oldPasswordMatch = await bcrypt.compare(oldPassword, isEmailMatch.password);
+    if (!oldPasswordMatch) {
+        return res.status(401).json({
+            message: "Old password didn't match with the records!"
+        })
+    }
+    await Register.updateOne({ email }, { password: hashedNewPassword })
+    return res.status(200).json({
+        message: "Password changed Successfully!"
+    })
+})
 mongoose.connect(process.env.MONGO_URL, {
-     ssl: true
-}).then(() => console.log("Database Connected Successfully!")); // Mongoose connect returns promise
+    ssl: true
+}).then(() => console.log("Database Connected Successfully!"));
+// Mongoose connect returns promise
 // If middleware sends a response then next() must not be called and vice-versa
 app.listen(process.env.PORT, () => {
     console.log(`The port is running on ${process.env.PORT} `);

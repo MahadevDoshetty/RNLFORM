@@ -11,7 +11,7 @@ const Login = () => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch(import.meta.env.VITE_LOGIN_URL, {
+        const response = await fetch(import.meta.env.VITE_LOGIN_URL || import.meta.env.VITE_LOCALHOST_LOGIN, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(loginDetails)
@@ -24,7 +24,7 @@ const Login = () => {
         else if (!response.ok) {
             setResult(data.message);
         }
-        localStorage.setItem('token',data.token);
+        localStorage.setItem('token', data.token);
     }
     // <Navigate to='/login' replace /> Navigate does nothing in js logic
 
