@@ -12,10 +12,11 @@ const App = () => {
     <Routes>
       <Route path='/' element={<Register />} />
       <Route path='/login' element={<Login />} />
-      <Route path='/dashboard' element={<ProtectedRoute ><Dashboard/></ProtectedRoute>} />
+      <Route path='/dashboard' element={<ProtectedRoute ><Dashboard /></ProtectedRoute>} />
+      <Route path='/resetpswd' element={<ProtectedRoute ><ForgotPswd /></ProtectedRoute>} />
       <Route path='/error' element={<Error />} />
     </Routes>
   )
 }
 
-export default App
+export default App;

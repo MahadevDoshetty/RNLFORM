@@ -116,7 +116,7 @@ app.get('/dashboard', authmiddleware, async (req, res) => {
 app.post('/resetpswd', async (req, res) => {
     const { email, oldPassword, newPassword } = req.body;
     const isEmailMatch = await Register.findOne({ email });
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    console.log(isEmailMatch);
     if (!isEmailMatch) {
         return res.status(400).json({
             message: "User not found!"
@@ -128,7 +128,7 @@ app.post('/resetpswd', async (req, res) => {
             message: "Old password didn't match with the records!"
         })
     }
-    await Register.updateOne({ email }, { password: hashedNewPassword })
+    await Register.updateOne({ email }, { password: await bcrypt.hash(newPassword,10) })
     return res.status(200).json({
         message: "Password changed Successfully!"
     })

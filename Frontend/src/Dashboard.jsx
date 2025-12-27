@@ -27,8 +27,7 @@ const Dashboard = () => {
             </Box>
             <Box>
                 <h3>{message} </h3>
-                <Button variant='text' sx={{ width: '10rem' }} onClick={() => navigate('/resetPswd')} >Forgot Password</Button>
-                <h4>Testing</h4>
+                <Button variant='text' sx={{ width: '10rem' }} onClick={() => navigate('/resetpswd')} >Change Password</Button>
             </Box>
         </Box>
     )
