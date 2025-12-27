@@ -6,7 +6,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState("");
     const dataFetch = async () => {
-        const response = await fetch(import.meta.env.VITE_DASHBOARD || import.meta.env.VITE_LOCALHOST_DASHBOARD, {
+        const response = await fetch(import.meta.env.VITE_DASHBOARD , {
             method: "GET",
             headers: {
                 "content-type": "application/json",

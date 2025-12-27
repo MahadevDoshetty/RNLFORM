@@ -11,7 +11,7 @@ const Login = () => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch(import.meta.env.VITE_LOGIN_URL || import.meta.env.VITE_LOCALHOST_LOGIN, {
+        const response = await fetch(import.meta.env.VITE_LOGIN_URL , {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(loginDetails)
