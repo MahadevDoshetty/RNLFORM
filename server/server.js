@@ -7,8 +7,8 @@ const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const Register = require('./Models/RegisterSchema');
 const allowedOrigins = [
-    process.env.FRONTEND_PROD,   
-    process.env.FRONTEND_LOCAL   
+    process.env.FRONTEND_PROD,
+    process.env.FRONTEND_LOCAL
 ];
 const corsOptions = {
     origin: (origin, callback) => {
@@ -114,25 +114,51 @@ app.get('/dashboard', authmiddleware, async (req, res) => {
     })
 })
 app.post('/resetpswd', async (req, res) => {
-    const { email, oldPassword, newPassword } = req.body;
-    const isEmailMatch = await Register.findOne({ email });
-    console.log(isEmailMatch);
-    if (!isEmailMatch) {
-        return res.status(400).json({
-            message: "User not found!"
+    try {
+        const authHeader = req.headers.authorization; //In this case, it just says it has something, this aint the token yet 
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(404).json({
+                message: "No token provided"
+            })
+        }
+        const token = authHeader.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const email = decoded.email;
+        const { oldPassword, newPassword } = req.body;
+        const user = await Register.findOne({ email });
+        if (!user) {
+            return res.status(401).json({
+                message: "User not found !"
+            })
+        }
+        const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isPasswordMatch) {
+            return res.status(401).json({
+                message: "Old Password didn't match records!"
+            })
+        }
+        user.password = await bcrypt.hash(newPassword, 10);
+        await user.save();
+        return res.status(200).json({
+            message: "Password Changed successfully!"
+        })
+    } catch (error) {
+        if (error.name == "TokenExpiredError") {
+            return res.status(401).json({
+                message: "Token Expired"
+            })
+        }
+        if (error.name == "JsonWebTokenError") {
+            return res.status(401).json({
+                message: "Invalid Token "
+            })
+        }
+        return res.status(500).json({
+            message: "Server Error!"
         })
     }
-    const oldPasswordMatch = await bcrypt.compare(oldPassword, isEmailMatch.password);
-    if (!oldPasswordMatch) {
-        return res.status(401).json({
-            message: "Old password didn't match with the records!"
-        })
-    }
-    await Register.updateOne({ email }, { password: await bcrypt.hash(newPassword,10) })
-    return res.status(200).json({
-        message: "Password changed Successfully!"
-    })
-})
+});
+
 mongoose.connect(process.env.MONGO_URL, {
     ssl: true
 }).then(() => console.log("Database Connected Successfully!"));

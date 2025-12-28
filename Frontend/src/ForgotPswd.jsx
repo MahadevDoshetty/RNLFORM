@@ -1,10 +1,11 @@
 import { Box, Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const ForgotPswd = () => {
+    const navigate = useNavigate()
     const [message, setMessage] = useState("");
     const [resetDetails, setResetDetails] = useState({
-        email: '',
         oldPassword: '',
         newPassword: '',
         confirmNewPassword: ''
@@ -27,12 +28,14 @@ const ForgotPswd = () => {
             const response = await fetch(import.meta.env.VITE_LOCALHOST_RESET || import.meta.env.VITE_RESET , {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    Authorization : `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(resetDetails)
             });
             const data = await response.json();
             setMessage(data.message);
+            
         } catch (error) {
             console.log(error);
         }
@@ -45,8 +48,6 @@ const ForgotPswd = () => {
                 </Box>
                 <Box display={'flex'}  justifySelf={'center'} flexDirection={'column'} width={'70%'} >
                     <form >
-                        <h3>Email Address</h3>
-                        <TextField type='email' value={resetDetails.email} onChange={handleChange} name='email' autoComplete='on' placeholder='Enter your Email Address' label='Email Address' />
                         <h3>Old Password</h3>
                         <TextField type='password' value={resetDetails.oldPassword} onChange={handleChange} name='oldPassword' autoComplete='on' label='Old Password' placeholder='Enter your Old Password' />
                         <h3>New Password</h3>

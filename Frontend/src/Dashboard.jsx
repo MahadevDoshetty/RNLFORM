@@ -1,4 +1,5 @@
-import { Box, Button } from '@mui/material'
+import { Box, Button, IconButton } from '@mui/material'
+import { Delete, Logout, LogoutOutlined } from '@mui/icons-material'
 import React, { useState } from 'react'
 import { Navigate, replace, useNavigate } from 'react-router-dom';
 
@@ -6,7 +7,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [message, setMessage] = useState("");
     const dataFetch = async () => {
-        const response = await fetch(import.meta.env.VITE_DASHBOARD , {
+        const response = await fetch(import.meta.env.VITE_DASHBOARD, {
             method: "GET",
             headers: {
                 "content-type": "application/json",
@@ -20,6 +21,10 @@ const Dashboard = () => {
         setMessage(data.message);
     }
     dataFetch();
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        window.location.reload();
+    }
     return (
         <Box>
             <Box>
@@ -28,6 +33,7 @@ const Dashboard = () => {
             <Box>
                 <h3>{message} </h3>
                 <Button variant='text' sx={{ width: '10rem' }} onClick={() => navigate('/resetpswd')} >Change Password</Button>
+                <Button variant='text' color='error' onClick={handleLogout} > Logout <LogoutOutlined color='error' /> </Button>
             </Box>
         </Box>
     )
