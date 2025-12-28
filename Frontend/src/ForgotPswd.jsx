@@ -24,7 +24,7 @@ const ForgotPswd = () => {
             return 1;
         }
         try {
-            const response = await fetch(import.meta.env.VITE_LOCALHOST_RESET, {
+            const response = await fetch(import.meta.env.VITE_LOCALHOST_RESET || import.meta.env.VITE_RESET , {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
