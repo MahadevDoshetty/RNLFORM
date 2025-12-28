@@ -55,6 +55,7 @@ const ForgotPswd = () => {
                         <h3>Confirm Password</h3>
                         <TextField type='password' value={resetDetails.confirmNewPassword} onChange={handleChange} autoComplete='on' name='confirmNewPassword' label='Confirm Password' placeholder='Confirm your New Password' />
                         <Button variant='contained' sx={{ margin: '1rem', bgcolor: '#EB4E62' }} type='submit' onClick={handleSubmit} >Submit</Button>
+                        <Button onClick={()=>navigate('/dashboard')} >Back to Dashboard</Button>
                         <h3>{message}</h3>
                     </form>
                 </Box>
