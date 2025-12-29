@@ -83,13 +83,13 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         const isMatch = await Register.findOne({ email });
-        const name = isMatch.name;
         if (!isMatch) {
             return res.status(401).json({
                 success: false,
                 message: "User Not Found"
             })
         }
+        const name = isMatch.name;
         const hashedCompare = await bcrypt.compare(password, isMatch.password);
         if (hashedCompare != true) {
             return res.status(401).json({
@@ -158,7 +158,7 @@ app.post('/resetpswd', async (req, res) => {
         })
     }
 });
-        
+
 mongoose.connect(process.env.MONGO_URL, {
     ssl: true
 }).then(() => console.log("Database Connected Successfully!"));
