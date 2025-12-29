@@ -1,6 +1,7 @@
+import { ArrowBack } from '@mui/icons-material';
 import { Box, Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 const ForgotPswd = () => {
     const navigate = useNavigate()
@@ -25,38 +26,82 @@ const ForgotPswd = () => {
             return 1;
         }
         try {
-            const response = await fetch(import.meta.env.VITE_LOCALHOST_RESET || import.meta.env.VITE_RESET , {
+            const response = await fetch(import.meta.env.VITE_LOCALHOST_RESET || import.meta.env.VITE_RESET, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization : `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(resetDetails)
             });
             const data = await response.json();
             setMessage(data.message);
-            
+
         } catch (error) {
             console.log(error);
         }
     }
     return (
-        <Box component={'div'} sx={{ fontFamily: 'sans-serif', backgroundColor: '#EB4E62', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
-            <Box sx={{ height: '80vh', maxHeight: '80vh', maxWidth: '40vw', width: '40vw', bgcolor: '#e4e4f4ff', borderRadius: '19px' }} >
-                <Box display={'flex'} justifyContent={'center'}  >
-                    <h2>Reset Password</h2>
-                </Box>
-                <Box display={'flex'}  justifySelf={'center'} flexDirection={'column'} width={'70%'} >
+        <Box component={'div'} sx={{ bgcolor: "#1F2937", height: '100vh', color: '#F9FAFB', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+            <Box sx={{ backgroundColor: "#374151", justifyItems: 'center' }} >
+                <Box sx={{ bgcolor: '#374151', width: '30vw', borderRadius: '7px', display: 'grid', justifyContent: 'center', justifyItems: 'center', alignSelf: 'center' }}>
+                    <Box display='flex' alignItems='center' gap='1rem'  >
+                        <h2>Reset Password</h2>
+                    </Box>
                     <form >
-                        <h3>Old Password</h3>
-                        <TextField type='password' value={resetDetails.oldPassword} onChange={handleChange} name='oldPassword' autoComplete='on' label='Old Password' placeholder='Enter your Old Password' />
-                        <h3>New Password</h3>
-                        <TextField type='password' value={resetDetails.newPassword} onChange={handleChange} autoComplete='on' name='newPassword' label='New Password' placeholder='Enter your New Password' />
-                        <h3>Confirm Password</h3>
-                        <TextField type='password' value={resetDetails.confirmNewPassword} onChange={handleChange} autoComplete='on' name='confirmNewPassword' label='Confirm Password' placeholder='Confirm your New Password' />
-                        <Button variant='contained' sx={{ margin: '1rem', bgcolor: '#EB4E62' }} type='submit' onClick={handleSubmit} >Submit</Button>
-                        <Button onClick={()=>navigate('/dashboard')} >Back to Dashboard</Button>
-                        <h3>{message}</h3>
+                        <Box sx={{ display: 'flex', flexDirection: "column", gap: "1rem" }} >
+                            <TextField type='password' value={resetDetails.oldPassword} onChange={handleChange} name='oldPassword' sx={{
+                                width: "25vw",
+                                '& .MuiInputBase-input::placeholder': {
+                                    color: '#F9FAFB'
+                                },
+                                "& .MuiInputBase-input": {
+                                    color: "#F9FAFB"
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: '#F9FAFB'
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: '#F9FAFB'
+                                }
+                            }
+                            } autoComplete='on' label='Old Password' placeholder='Enter your Old Password' />
+                            <TextField type='password' value={resetDetails.newPassword} sx={{
+                                width: "25vw",
+                                '& .MuiInputBase-input::placeholder': {
+                                    color: '#F9FAFB'
+                                },
+                                "& .MuiInputBase-input": {
+                                    color: "#F9FAFB"
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: '#F9FAFB'
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: '#F9FAFB'
+                                }
+                            }
+                            } onChange={handleChange} autoComplete='on' name='newPassword' label='New Password' placeholder='Enter your New Password' />
+                            <TextField type='password' value={resetDetails.confirmNewPassword} onChange={handleChange} autoComplete='on' sx={{
+                                width: "25vw",
+                                '& .MuiInputBase-input::placeholder': {
+                                    color: '#F9FAFB'
+                                },
+                                "& .MuiInputBase-input": {
+                                    color: "#F9FAFB"
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: '#F9FAFB'
+                                },
+                                '& .MuiInputLabel-root.Mui-focused': {
+                                    color: '#F9FAFB'
+                                }
+                            }
+                            } name='confirmNewPassword' label='Confirm Password' placeholder='Confirm your New Password' />
+                            <Button variant='contained' sx={{ margin: '1rem', gap:'1rem' }} type='submit' onClick={handleSubmit} >Submit  </Button>
+                            <Button variant='contained' onClick={() => navigate('/dashboard')} sx={{gap:'1rem'}} > <ArrowBack />  Back to Dashboard</Button>
+                            <h3>{message}</h3>
+                        </Box>
                     </form>
                 </Box>
             </Box>

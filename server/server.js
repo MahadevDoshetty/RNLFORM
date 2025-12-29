@@ -158,7 +158,7 @@ app.post('/resetpswd', async (req, res) => {
         })
     }
 });
-
+        
 mongoose.connect(process.env.MONGO_URL, {
     ssl: true
 }).then(() => console.log("Database Connected Successfully!"));
